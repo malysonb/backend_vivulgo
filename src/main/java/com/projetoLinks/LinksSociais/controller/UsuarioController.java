@@ -1,5 +1,7 @@
 package com.projetoLinks.LinksSociais.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.projetoLinks.LinksSociais.config.JwtTokenUtil;
@@ -36,6 +38,10 @@ public class UsuarioController {
         Usuario usuario = userRepo.findByLogin(jwtTokenUtil.getUsernameFromToken(header))
                             .orElseThrow(() -> new Exception("Usuario não encontrado!"));
         return new ResponseEntity<>(usuario, HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/all")
+    public ResponseEntity<List<Usuario>> getUsuarios() throws Exception{
+        return new ResponseEntity<>(userRepo.findAll(), HttpStatus.ACCEPTED);
     }
 
 }
