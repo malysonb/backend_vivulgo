@@ -8,6 +8,7 @@ import com.projetoLinks.LinksSociais.dto.ErrorDTO;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -26,6 +27,11 @@ public class ExceptionController {
 
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ErrorDTO> exceptionHandler(IOException ex){
+        return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorDTO> exceptionHandler(AuthenticationException ex){
         return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
