@@ -1,5 +1,7 @@
 package com.projetoLinks.LinksSociais.controller;
 
+import javax.servlet.ServletException;
+
 import com.projetoLinks.LinksSociais.dto.ErrorDTO;
 
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,11 @@ public class ExceptionController {
     
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDTO> exceptionHandler(Exception ex){
+        return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ServletException.class)
+    public ResponseEntity<ErrorDTO> exceptionHandler(ServletException ex){
         return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 

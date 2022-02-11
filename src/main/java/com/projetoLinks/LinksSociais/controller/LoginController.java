@@ -45,6 +45,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenResposta> login(@Valid @RequestBody LoginDTO dto) throws Exception {
+        System.out.println("Recebido");
         autenticar(dto);
         final UserDetails userDetails = loginService.loadUserByUsername(dto.getLogin());
         final String token = jwtTokenUtil.generateToken(userDetails);
