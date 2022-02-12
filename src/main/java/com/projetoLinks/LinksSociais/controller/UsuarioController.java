@@ -11,12 +11,11 @@ import com.projetoLinks.LinksSociais.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/user")
@@ -42,6 +41,12 @@ public class UsuarioController {
     @GetMapping("/all")
     public ResponseEntity<List<Usuario>> getUsuarios() throws Exception{
         return new ResponseEntity<>(userRepo.findAll(), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUsuario(@PathVariable("id") Long id){
+        userRepo.delete(userRepo.getById(id));
+        return new ResponseEntity<>("Deletado com sucesso!", HttpStatus.OK);
     }
 
 }
