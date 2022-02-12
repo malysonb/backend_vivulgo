@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST).permitAll()
                 // Qualquer outra requisição deve ser checada
                 .anyRequest()
-                .permitAll()
+                .authenticated()
                 .and().cors()
                 .and().csrf()
                 .disable()

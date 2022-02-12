@@ -61,7 +61,7 @@ public class LoginController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getLogin(), dto.getSenha()));
         } catch (Exception e) {
-            throw new Exception("Usuario não existe!");
+            throw new Exception("Usuário ou senha está incorreto!");
         }
     }
 
