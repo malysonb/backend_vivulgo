@@ -1,6 +1,7 @@
 package com.projetoLinks.LinksSociais.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,14 +15,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "linkSocial")
 public class LinkSocial implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "increment")
+    @JsonIgnore
     private long idLinkSocial;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "linkSocial")
     private Usuario donoUsuario;
 
@@ -35,6 +40,13 @@ public class LinkSocial implements Serializable{
 
     @OneToMany(mappedBy = "pagina", cascade = CascadeType.ALL)
     private List<Link> links;
+
+    public LinkSocial() {
+    }
+
+    public LinkSocial(Usuario donoUsuario) {
+        this.donoUsuario = donoUsuario;
+    }
 
     public Usuario getDonoUsuario() {
         return donoUsuario;
@@ -66,6 +78,12 @@ public class LinkSocial implements Serializable{
 
     public void setLinks(List<Link> links) {
         this.links = links;
+    }
+
+    public void addLink(Link link){
+        if(this.links == null)
+            this.links = new ArrayList<>(); 
+        this.links.add(link);
     }
 
     public long getIdLinkSocial() {

@@ -1,13 +1,17 @@
 package com.projetoLinks.LinksSociais.controller;
 
+import java.util.Date;
+
 import javax.validation.Valid;
 
 import com.projetoLinks.LinksSociais.config.JwtTokenUtil;
 import com.projetoLinks.LinksSociais.dto.LoginDTO;
+import com.projetoLinks.LinksSociais.dto.StatusServerDTO;
 import com.projetoLinks.LinksSociais.dto.TokenResposta;
 import com.projetoLinks.LinksSociais.dto.UsuarioDTO;
-import com.projetoLinks.LinksSociais.model.Usuario;
+import com.projetoLinks.LinksSociais.dto.UsuarioViewDTO;
 import com.projetoLinks.LinksSociais.service.LoginService;
+import com.projetoLinks.LinksSociais.service.SistemaService;
 import com.projetoLinks.LinksSociais.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +42,12 @@ public class LoginController {
     @Autowired
     UsuarioService usuarioService;
 
+    @Autowired
+    SistemaService sistemaService;
+
     @GetMapping
-    public ResponseEntity<String> teste(){
-        return ResponseEntity.ok("FUNCIONA!");
+    public ResponseEntity<StatusServerDTO> Status(){
+        return new ResponseEntity<>(sistemaService.getStatus(), HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -49,12 +56,13 @@ public class LoginController {
         autenticar(dto);
         final UserDetails userDetails = loginService.loadUserByUsername(dto.getLogin());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new TokenResposta(token));
+        Date expiration = jwtTokenUtil.getExpirationDateFromToken(token);
+        return ResponseEntity.ok(new TokenResposta(token, expiration));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Usuario> signUp(@Valid @RequestBody UsuarioDTO dto) {
-        return new ResponseEntity<>(usuarioService.cadastrarUsuario(dto), HttpStatus.OK);
+    public ResponseEntity<UsuarioViewDTO> signUp(@Valid @RequestBody UsuarioDTO dto) {
+        return new ResponseEntity<>(new UsuarioViewDTO(usuarioService.cadastrarUsuario(dto)), HttpStatus.OK);
     }
 
     private void autenticar(LoginDTO dto) throws Exception {

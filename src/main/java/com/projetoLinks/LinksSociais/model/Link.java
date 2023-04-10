@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.projetoLinks.LinksSociais.dto.LinkDTO;
+
 @Entity
 @Table(name = "link")
 public class Link {
@@ -16,10 +19,12 @@ public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "increment")
     @Column(name = "id_link")
+    @JsonIgnore
     private long idLink;
 
     @ManyToOne
     @JoinColumn(name = "linkSocial_id", nullable = false)
+    @JsonIgnore
     private LinkSocial pagina;
 
     @Column(name = "nome", nullable = false)
@@ -30,9 +35,34 @@ public class Link {
 
     @Column(name = "modelo")
     private String modelo;
+ 
+    @Column(name = "cor_texto")
+    private String corTexto;
 
+    @Column(name = "cor_icone")
+    private String corIcone;
+
+    @Column(name = "cor_borda")
+    private String corBorda;
+
+    @Column(name = "cor_fundo")
+    private String corFundo;
 
     //////////////////////
+
+    public Link() {
+    }
+
+    public Link(LinkDTO dto, LinkSocial pagina) {
+        this.pagina = pagina;
+        this.nome = dto.getNome();
+        this.link = dto.getLink();
+        this.modelo = dto.getModelo();
+        this.corBorda = dto.getCorBorda();
+        this.corFundo = dto.getCorFundo();
+        this.corIcone = dto.getCorIcone();
+        this.corTexto = dto.getCorTexto();
+    }
 
     public long getIdLink() {
         return idLink;
@@ -72,6 +102,38 @@ public class Link {
 
     public void setPagina(LinkSocial pagina) {
         this.pagina = pagina;
+    }
+
+    public String getCorTexto() {
+        return corTexto;
+    }
+
+    public void setCorTexto(String corTexto) {
+        this.corTexto = corTexto;
+    }
+
+    public String getCorIcone() {
+        return corIcone;
+    }
+
+    public void setCorIcone(String corIcone) {
+        this.corIcone = corIcone;
+    }
+
+    public String getCorBorda() {
+        return corBorda;
+    }
+
+    public void setCorBorda(String corBorda) {
+        this.corBorda = corBorda;
+    }
+
+    public String getCorFundo() {
+        return corFundo;
+    }
+
+    public void setCorFundo(String corFundo) {
+        this.corFundo = corFundo;
     }
 
     

@@ -3,6 +3,7 @@ package com.projetoLinks.LinksSociais.model;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,11 +41,14 @@ public class Usuario implements UserDetails{
     @Column(name = "senha", nullable = false)
     private String senha;
 
+    @Column(name = "ativado", nullable = false)
+    private boolean ativado;
+
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role nivelAcesso;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "linkSocial_id")
     private LinkSocial linkSocial;
     
@@ -57,6 +61,7 @@ public class Usuario implements UserDetails{
         this.nome = dto.getNome();
         this.email = dto.getEmail();
         this.senha = new BCryptPasswordEncoder().encode(dto.getSenha());
+        this.ativado = true;
     }
 
     //////////////////////
@@ -95,8 +100,7 @@ public class Usuario implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        // TODO Auto-generated method stub
-        return true;
+        return ativado;
     }
 
     public String getLogin() {
@@ -145,6 +149,22 @@ public class Usuario implements UserDetails{
 
     public void setLinkSocial(LinkSocial linkSocial) {
         this.linkSocial = linkSocial;
+    }
+
+    public long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
+    }
+
+    public boolean isAtivado() {
+        return ativado;
+    }
+
+    public void setAtivado(boolean ativado) {
+        this.ativado = ativado;
     }
     
 }

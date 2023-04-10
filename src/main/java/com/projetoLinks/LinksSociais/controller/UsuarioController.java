@@ -1,12 +1,15 @@
 package com.projetoLinks.LinksSociais.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.security.RolesAllowed;
+import javax.transaction.Transactional;
 
-import com.projetoLinks.LinksSociais.config.JwtTokenUtil;
+import com.projetoLinks.LinksSociais.dto.UsuarioViewDTO;
 import com.projetoLinks.LinksSociais.model.Usuario;
 import com.projetoLinks.LinksSociais.repository.UsuarioRepository;
+import com.projetoLinks.LinksSociais.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,25 +28,27 @@ public class UsuarioController {
     UsuarioRepository userRepo;
 
     @Autowired
-    JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private HttpServletRequest context;
+    UsuarioService uService;
 
     @GetMapping
-    public ResponseEntity<Usuario> getUsuarioLogado() throws Exception{
-        String header = context.getHeader("Authorization");
-        header = header.substring(7); //Bearer 
-        Usuario usuario = userRepo.findByLogin(jwtTokenUtil.getUsernameFromToken(header))
-                            .orElseThrow(() -> new Exception("Usuario não encontrado!"));
-        return new ResponseEntity<>(usuario, HttpStatus.ACCEPTED);
+    @Transactional
+    public ResponseEntity<UsuarioViewDTO> getUsuarioLogado() throws Exception{
+        Usuario usuario = uService.getUsuarioLogado();
+        return new ResponseEntity<>(new UsuarioViewDTO(usuario), HttpStatus.ACCEPTED);
     }
+
     @GetMapping("/all")
-    public ResponseEntity<List<Usuario>> getUsuarios() throws Exception{
-        return new ResponseEntity<>(userRepo.findAll(), HttpStatus.ACCEPTED);
+    @RolesAllowed({"ROLE_ADMIN"})
+    public ResponseEntity<List<UsuarioViewDTO>> getUsuarios() throws Exception{
+        List<UsuarioViewDTO> usuarios = new ArrayList<>();
+        for (Usuario user : userRepo.findAll()) {
+            usuarios.add(new UsuarioViewDTO(user));
+        }
+        return new ResponseEntity<>(usuarios, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
+    @RolesAllowed({"ROLE_ADMIN"})
     public ResponseEntity<String> deleteUsuario(@PathVariable("id") Long id){
         userRepo.delete(userRepo.getById(id));
         return new ResponseEntity<>("Deletado com sucesso!", HttpStatus.OK);

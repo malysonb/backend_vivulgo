@@ -5,19 +5,19 @@ import javax.validation.constraints.NotNull;
 
 public class UsuarioDTO {
     
-    @NotBlank(message ="" + "{not.blank}")
+    @NotBlank(message ="Login" + "{not.blank}")
     @NotNull(message = "Login" + "{not.null}")
     private String login;
 
-    @NotBlank(message ="" + "{not.blank}")
+    @NotBlank(message ="Nome" + "{not.blank}")
     @NotNull(message = "Nome" + "{not.null}")
     private String nome;
 
-    @NotBlank(message ="" + "{not.blank}")
+    @NotBlank(message ="Email" + "{not.blank}")
     @NotNull(message = "Email" + "{not.null}")
     private String email;
 
-    @NotBlank(message ="" + "{not.blank}")
+    @NotBlank(message ="Senha" + "{not.blank}")
     @NotNull(message = "Senha" + "{not.null}")
     private String senha;
 

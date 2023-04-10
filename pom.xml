@@ -87,14 +87,14 @@
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
-			<version>3.0.0</version>
+			<version>2.9.2</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
-			<version>3.0.0</version>
+			<version>2.9.2</version>
 		</dependency>
 
 
@@ -124,9 +124,33 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+            <fork>true</fork>
+            <mainClass>com.projetoLinks.LinksSociais.LinksSociaisApplication</mainClass>
+        </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+        </executions>
+    </plugin>
+			<plugin>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <configuration>
+        <archive>
+          <manifest>
+            <mainClass>com.projetoLinks.LinksSociais.LinksSociaisApplication</mainClass>
+          </manifest>
+        </archive>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+      </configuration>
+    </plugin>
 		</plugins>
 	</build>
 
