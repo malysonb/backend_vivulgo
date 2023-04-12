@@ -61,7 +61,7 @@ public class LoginController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UsuarioViewDTO> signUp(@Valid @RequestBody UsuarioDTO dto) {
+    public ResponseEntity<UsuarioViewDTO> signUp(@Valid @RequestBody UsuarioDTO dto) throws Exception{
         return new ResponseEntity<>(new UsuarioViewDTO(usuarioService.cadastrarUsuario(dto)), HttpStatus.OK);
     }
 

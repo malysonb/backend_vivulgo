@@ -19,7 +19,6 @@ public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "increment")
     @Column(name = "id_link")
-    @JsonIgnore
     private long idLink;
 
     @ManyToOne
@@ -55,6 +54,16 @@ public class Link {
 
     public Link(LinkDTO dto, LinkSocial pagina) {
         this.pagina = pagina;
+        this.nome = dto.getNome();
+        this.link = dto.getLink();
+        this.modelo = dto.getModelo();
+        this.corBorda = dto.getCorBorda();
+        this.corFundo = dto.getCorFundo();
+        this.corIcone = dto.getCorIcone();
+        this.corTexto = dto.getCorTexto();
+    }
+
+    public void editar(LinkDTO dto) {
         this.nome = dto.getNome();
         this.link = dto.getLink();
         this.modelo = dto.getModelo();

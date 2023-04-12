@@ -31,7 +31,9 @@ public class UsuarioService {
     JwtTokenUtil jwtTokenUtil;
 
     @Transactional
-    public Usuario cadastrarUsuario(UsuarioDTO dto){
+    public Usuario cadastrarUsuario(UsuarioDTO dto) throws Exception{
+        if(usuarioRepo.findByLogin(dto.getLogin()).isPresent())
+            throw new Exception("Já existe um usuário com este login");
         Usuario usuario = new Usuario(dto);
         if(roleRepo.findById("ROLE_USER").isPresent())
             usuario.setNivelAcesso(roleRepo.findById("ROLE_USER").get());
