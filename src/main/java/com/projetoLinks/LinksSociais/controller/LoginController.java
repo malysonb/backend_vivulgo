@@ -1,6 +1,7 @@
 package com.projetoLinks.LinksSociais.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -10,6 +11,7 @@ import com.projetoLinks.LinksSociais.dto.StatusServerDTO;
 import com.projetoLinks.LinksSociais.dto.TokenResposta;
 import com.projetoLinks.LinksSociais.dto.UsuarioDTO;
 import com.projetoLinks.LinksSociais.dto.UsuarioViewDTO;
+import com.projetoLinks.LinksSociais.model.Parametro;
 import com.projetoLinks.LinksSociais.service.LoginService;
 import com.projetoLinks.LinksSociais.service.SistemaService;
 import com.projetoLinks.LinksSociais.service.UsuarioService;
@@ -46,8 +48,8 @@ public class LoginController {
     SistemaService sistemaService;
 
     @GetMapping
-    public ResponseEntity<StatusServerDTO> Status(){
-        return new ResponseEntity<>(sistemaService.getStatus(), HttpStatus.OK);
+    public ResponseEntity<List<Parametro>> Status(){
+        return new ResponseEntity<>(sistemaService.listParametros(), HttpStatus.OK);
     }
 
     @PostMapping("/login")
